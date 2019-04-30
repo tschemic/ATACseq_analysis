@@ -38,4 +38,5 @@ Adjust the path to the ATACseq_analysis directory in the config_file.txt.
 Adjust the path to your picard.jar file in the config_file.txt.
 
 Change the adapter sequence for read trimming in the config_file.txt if necessary. By default it contains the Illumina Nextera adapter. For adapter sequences see: https://support.illumina.com/content/dam/illumina-support/documents/documentation/chemistry_documentation/experiment-design/illumina-adapter-sequences-1000000002694-10.pdf 
+
 Change into the required_files directory and run the analysis script (analysis_script.sh).
