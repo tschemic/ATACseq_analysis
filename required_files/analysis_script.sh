@@ -38,7 +38,7 @@ ADAPT2=$(cat $WKDIR/required_files/config_file.txt | grep Read2: | cut -d ":" -f
 # rRNA=$WKDIR/required_files/Ca_A22chrAM_rRNAloci.bed  ### only for RNAseq data
 MITO=$FILES/chrM.bed
 mkdir $WKDIR/QC
-PICARD=$(cat $WKDIR/required_files/config_file.txt | grep "picard file path:" | cut -d ":" -f 2)
+PICARD=$WKDIR/required_files/picard.jar
 mkdir $WKDIR/stats
 STATS=$WKDIR/stats
 
