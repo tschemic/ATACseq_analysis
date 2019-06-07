@@ -4,4 +4,3 @@ Enter adapter sequences:
 Read1:CTGTCTCTTATACACATCT
 Read2:CTGTCTCTTATACACATCT
 
-Enter picard file path:/path/to/picard.jar
