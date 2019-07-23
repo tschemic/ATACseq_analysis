@@ -14,7 +14,7 @@ read -p 'Specify file format (bam or fastq): ' FORMAT
 
 read -p 'Do you want to do a quality control of the raw data (yes or no): ' QCRAW
 
-read -p 'How many threads should be used for the analysis (default: 1): ' THREAD
+read -p 'How many threads should be used for the analysis (use 1, if you are not sure): ' THREAD
 
 # read -p 'Are the libraries prepared in a strand-specific way? (yes or no): ' STRANDED   ### only for RNAseq data
 
