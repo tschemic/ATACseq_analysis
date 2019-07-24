@@ -185,7 +185,7 @@ do
 	rm *.sam
 done
 
-for i in $(ls | grep -E '((nucfree)|(mononuc)|(dinuc)).bam$')
+for i in $(ls $WKDIR | grep -E '((nucfree)|(mononuc)|(dinuc)).bam$')
 do
 	SNAME=$(echo $i | sed 's:/.*/::g')
 	bamCoverage -b $i -o $WKDIR/IGV_files/$SNAME.bw -bs 5 -p $THREAD --normalizeUsing CPM
