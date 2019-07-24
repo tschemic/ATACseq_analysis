@@ -155,7 +155,7 @@ mkdir $WKDIR/IGV_files
 for i in $WKDIR/*.final.bam
 do
 	SNAME=$(echo $i | sed 's:/.*/::g')
-	bamCoverage -b $i -o $WKDIR/IGV_files/$SNAME.bw -e -p $THREADS --normalizeUsing CPM
+	bamCoverage -b $i -o $WKDIR/IGV_files/$SNAME.bw -e -p $THREAD --normalizeUsing CPM
 done
 
 
