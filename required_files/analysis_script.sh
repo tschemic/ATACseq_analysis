@@ -85,7 +85,7 @@ then
 			fastqc -o $WKDIR/QC_raw $i
 		done
 	fi
-	multiqc -s -o $WKDIR/QC_raw $WKDIR/QC_raw
+	multiqc -o $WKDIR/QC_raw $WKDIR/QC_raw
 else
 	echo 'No QC of raw data done.'
 fi
