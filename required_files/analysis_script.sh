@@ -187,7 +187,8 @@ done
 
 for i in $(ls | grep -E '((nucfree)|(mononuc)|(dinuc)).bam$')
 do
-	bamCoverage -b $i -o $i.bw -bs 5 -p $THREAD --normalizeUsing CPM
+	SNAME=$(echo $i | sed 's:/.*/::g')
+	bamCoverage -b $i -o $WKDIR/IGV_files/$SNAME.bw -bs 5 -p $THREAD --normalizeUsing CPM
 done
 
 #SNAME=$(echo $i | sed 's:/.*/::g' | cut -d "." -f 1)  ### this extracts the sample name from the bam file name - adjust accordingly, otherwise replace "$SNAME" in script with "$i" (without quotes)
