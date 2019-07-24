@@ -38,7 +38,7 @@ FEATURES=$WKDIR/required_files/C_albicans_SC5314_A22_current_features_haploid.gf
 ADAPT1=$(cat $WKDIR/required_files/config_file.txt | grep Read1: | cut -d ":" -f 2)
 ADAPT2=$(cat $WKDIR/required_files/config_file.txt | grep Read2: | cut -d ":" -f 2)
 # rRNA=$WKDIR/required_files/Ca_A22chrAM_rRNAloci.bed  ### only for RNAseq data
-MITO=$FILES/chrM.bed
+BLKLIST=$FILES/blacklist.bed
 mkdir $WKDIR/QC
 PICARD=$WKDIR/required_files/picard.jar
 mkdir $WKDIR/stats
@@ -93,7 +93,7 @@ fi
 for i in $WKDIR/$(ls $WKDIR | egrep '(\.f.*q$)|(q\.gz$)')
 do
 	SNAME=$(echo $i | sed 's:/.*/::g')
-	cutadapt --interleaved -j $THREAD -q 30 -O 1 -a $ADAPT1 -A $ADAPT2 $i > $i.trimmed.fq.gz 2>$WKDIR/QC/$SNAME.cutadapt.report.txt   # removes Illumina TrueSeq adapters from reads (change -a for different adapters); -j specifies number of cores to use, remove if not sure
+	cutadapt --interleaved -j $THREAD -q 30 -O 1 -a $ADAPT1 -A $ADAPT2 $i > $i.trimmed.fq.gz 2>$WKDIR/QC/Cutadapt_$SNAME   # removes Illumina TrueSeq adapters from reads (change -a for different adapters); -j specifies number of cores to use, remove if not sure
 	rm $i
 
 	ngm -q $i.trimmed.fq.gz -r $GENOME -o $i.trimmed.fq.bam -b -p -Q 30 -t $THREAD # add -p for paired-end data; -t 6 is optional - means 6 threads of the processor are used, if you don't know what to do, remove it; --topn 1 --strata causes ngm to write only uniquely mapping reads to the output
@@ -105,8 +105,10 @@ do
 	# Labelling of duplicated reads and removal of optical duplicates
 	java -jar $PICARD MarkDuplicates REMOVE_DUPLICATES=true VALIDATION_STRINGENCY=LENIENT I=$i.trimmed.fq.bam.sort.bam O=$i.trimmed.fq.bam.sort.bam.markdup.bam M=$WKDIR/QC/$SNAME.markdup.metrics.txt   ### use REMOVE_SEQUENCING_DUPLICATES=true to remove only optical duplicates
 	rm $i.trimmed.fq.bam.sort.bam
+	cat $WKDIR/QC/$SNAME.markdup.metrics.txt | sed "s/INPUT=\[.*\]/INPUT=\[Picard_$SNAME\]/" > $WKDIR/QC/temp
+	mv $WKDIR/QC/temp $WKDIR/QC/$SNAME.markdup.metrics.txt
 
-	bedtools intersect -a $i.trimmed.fq.bam.sort.bam.markdup.bam -b $MITO -v > $i.trimmed.fq.bam.sort.bam.markdup.bam.filt.bam  # removal of reads mapping to mitochondrial loci
+	bedtools intersect -a $i.trimmed.fq.bam.sort.bam.markdup.bam -b $BLKLIST -v > $i.trimmed.fq.bam.sort.bam.markdup.bam.filt.bam  # removal of reads mapping to mitochondrial loci
 	rm $i.trimmed.fq.bam.sort.bam.markdup.bam
 
 	#sambamba view -F "mapping_quality >= 30" -f bam $i.trimmed.fq.bam.sort.bam.filt.bam.markdup.bam > $i.trimmed.fq.bam.sort.bam.filt.bam.markdup.bam.qfilt.bam  # not required, already filteres during mapping
@@ -119,11 +121,15 @@ do
 	samtools sort -n -o $i.final.sortn.bam -@ $THREAD $i.final.bam
 
 	#echo $i >> $WKDIR/QC/flagstat_analysis.txt
-	samtools flagstat $i.final.bam >> $WKDIR/QC/$SNAME.flagstat_analysis.txt   # flagstat analysis
+	samtools flagstat $i.final.bam >> $WKDIR/QC/Flagstat_$SNAME   # flagstat analysis
 
 	samtools index $i.final.bam
 
 	fastqc -o $WKDIR/QC $i.final.bam
+	unzip $WKDIR/QC/$SNAME.final_fastqc.zip
+	cat $WKDIR/QC/$SNAME.final_fastqc/fastqc_data.txt | sed 's/Filename	\(.*\).final.bam/Filename	FastQC_\1/' > $WKDIR/QC/$SNAME.final_fastqc/temp
+	mv $WKDIR/QC/$SNAME.final_fastqc/temp $WKDIR/QC/$SNAME.final_fastqc/fastqc_data.txt
+	zip -um -b $WKDIR/QC/$SNAME.final_fastqc $WKDIR/QC/$SNAME.final_fastqc.zip
 
 done
 
