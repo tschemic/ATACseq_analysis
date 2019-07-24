@@ -136,7 +136,7 @@ do
 
 done
 
-multiqc -s -o $WKDIR/QC $WKDIR/QC
+multiqc -o $WKDIR/QC $WKDIR/QC
 
 
 # Calculation of normalized strand cross-correlation (NSC) and relative strand cross-correlation (RSC)
