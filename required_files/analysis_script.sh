@@ -71,19 +71,21 @@ fi
 
 if [ $QCRAW == 'yes' ]
 then
+	mkdir $WKDIR/QC_raw
 	echo 'Quality control of raw data:'
 	if [ $FORMAT == 'bam' ]
 	then
 		for i in $WKDIR/*.bam
 		do
-			fastqc -o $WKDIR/QC $i
+			fastqc -o $WKDIR/QC_raw $i
 		done
 	else
 		for i in $WKDIR/*.fq
 		do
-			fastqc -o $WKDIR/QC $i
+			fastqc -o $WKDIR/QC_raw $i
 		done
 	fi
+	multiqc -s -o $WKDIR/QC_raw $WKDIR/QC_raw
 else
 	echo 'No QC of raw data done.'
 fi
