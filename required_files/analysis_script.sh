@@ -93,7 +93,7 @@ fi
 for i in $WKDIR/$(ls $WKDIR | egrep '(\.f.*q$)|(q\.gz$)')
 do
 	SNAME=$(echo $i | sed 's:/.*/::g')
-	cutadapt --interleaved -j $THREAD -q 30 -O 1 -a $ADAPT1 -A $ADAPT2 $i > $i.trimmed.fq.gz 2>$WKDIR/QC/Cutadapt_$SNAME   # removes Illumina TrueSeq adapters from reads (change -a for different adapters); -j specifies number of cores to use, remove if not sure
+	cutadapt --interleaved -j $THREAD -q 30 -O 1 -a $ADAPT1 -A $ADAPT2 $i > $i.trimmed.fq.gz 2>$WKDIR/QC/Cutadapt_$SNAME.txt   # removes Illumina TrueSeq adapters from reads (change -a for different adapters); -j specifies number of cores to use, remove if not sure
 	rm $i
 
 	ngm -q $i.trimmed.fq.gz -r $GENOME -o $i.trimmed.fq.bam -b -p -Q 30 -t $THREAD # add -p for paired-end data; -t 6 is optional - means 6 threads of the processor are used, if you don't know what to do, remove it; --topn 1 --strata causes ngm to write only uniquely mapping reads to the output
@@ -105,7 +105,7 @@ do
 	# Labelling of duplicated reads and removal of optical duplicates
 	java -jar $PICARD MarkDuplicates REMOVE_DUPLICATES=true VALIDATION_STRINGENCY=LENIENT I=$i.trimmed.fq.bam.sort.bam O=$i.trimmed.fq.bam.sort.bam.markdup.bam M=$WKDIR/QC/$SNAME.markdup.metrics.txt   ### use REMOVE_SEQUENCING_DUPLICATES=true to remove only optical duplicates
 	rm $i.trimmed.fq.bam.sort.bam
-	cat $WKDIR/QC/$SNAME.markdup.metrics.txt | sed "s/INPUT=\[.*\]/INPUT=\[Picard_$SNAME\]/" > $WKDIR/QC/temp
+	cat $WKDIR/QC/$SNAME.markdup.metrics.txt | sed "s/INPUT=\[.*\]/INPUT=\[$SNAME\]/" > $WKDIR/QC/temp
 	mv $WKDIR/QC/temp $WKDIR/QC/$SNAME.markdup.metrics.txt
 
 	bedtools intersect -a $i.trimmed.fq.bam.sort.bam.markdup.bam -b $BLKLIST -v > $i.trimmed.fq.bam.sort.bam.markdup.bam.filt.bam  # removal of reads mapping to mitochondrial loci
@@ -117,11 +117,12 @@ do
 	samtools view -H $i.trimmed.fq.bam.sort.bam.markdup.bam.filt.bam > out.sam
 	samtools view $i.trimmed.fq.bam.sort.bam.markdup.bam.filt.bam | awk 'BEGIN {FS="\t"; OFS="\t"} {if (($2 == 99)||($2 == 83)||($2 == 147)||($2 == 163)) {print}}' >> out.sam
 	samtools view -b -@ $THREAD out.sam > $i.final.bam
+	rm $i.trimmed.fq.bam.sort.bam.markdup.bam.filt.bam
 	
 	samtools sort -n -o $i.final.sortn.bam -@ $THREAD $i.final.bam
 
 	#echo $i >> $WKDIR/QC/flagstat_analysis.txt
-	samtools flagstat $i.final.bam >> $WKDIR/QC/Flagstat_$SNAME   # flagstat analysis
+	samtools flagstat $i.final.bam >> $WKDIR/QC/$SNAME.txt   # flagstat analysis
 
 	samtools index $i.final.bam
 
