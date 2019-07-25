@@ -80,8 +80,9 @@ then
 			fastqc -o $WKDIR/QC_raw $i
 		done
 	else
-		for i in $WKDIR/*.fq
+		for SNAME in $(ls $WKDIR | egrep '(\.f.*q$)|(q\.gz$)')
 		do
+			i=$WKDIR/$SNAME
 			fastqc -o $WKDIR/QC_raw $i
 		done
 	fi
@@ -92,9 +93,10 @@ fi
 
 # Adapter removal with cutadapt and mapping of all files with NGM
 
-for i in $WKDIR/$(ls $WKDIR | egrep '(\.f.*q$)|(q\.gz$)')
+for SNAME in $(ls $WKDIR | egrep '(\.f.*q$)|(q\.gz$)')
 do
-	SNAME=$(echo $i | sed 's:/.*/::g')
+	i=$WKDIR/$SNAME
+	
 	cutadapt --interleaved -j $THREAD -q 30 -O 1 -a $ADAPT1 -A $ADAPT2 $i > $i.trimmed.fq.gz 2>$WKDIR/QC/Cutadapt_$SNAME.txt   # removes Illumina TrueSeq adapters from reads (change -a for different adapters); -j specifies number of cores to use, remove if not sure
 	rm $i
 
@@ -185,9 +187,9 @@ do
 	rm *.sam
 done
 
-for i in $(ls $WKDIR | grep -E '((nucfree)|(mononuc)|(dinuc)).bam$')
+for SNAME in $(ls $WKDIR | grep -E '((nucfree)|(mononuc)|(dinuc)).bam$')
 do
-	bamCoverage -b $WKDIR/$i -o $WKDIR/IGV_files/$i.bw -bs 5 -p $THREAD --normalizeUsing CPM
+	bamCoverage -b $WKDIR/$SNAME -o $WKDIR/IGV_files/$SNAME.bw -bs 5 -p $THREAD --normalizeUsing CPM
 done
 
 #SNAME=$(echo $i | sed 's:/.*/::g' | cut -d "." -f 1)  ### this extracts the sample name from the bam file name - adjust accordingly, otherwise replace "$SNAME" in script with "$i" (without quotes)
