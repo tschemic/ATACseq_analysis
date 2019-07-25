@@ -1,5 +1,3 @@
-Enter path to working directory containing data files:/path/to/ATACseq_analysis
-
 Enter adapter sequences:
 Read1:CTGTCTCTTATACACATCT
 Read2:CTGTCTCTTATACACATCT
