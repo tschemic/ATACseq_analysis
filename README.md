@@ -19,24 +19,16 @@ cutadapt (https://cutadapt.readthedocs.io/en/stable/)
 
 NextGenMap (https://github.com/Cibiv/NextGenMap/wiki)
 
-sambamba (http://lomereiter.github.io/sambamba/)
-
 DeepTools (https://deeptools.readthedocs.io/en/develop/)
 
 R spp package (https://cran.r-project.org/web/packages/spp/index.html)
 
 All the above-mentioned tools have to be included in yout PATH environment.
 
-Picard tools (https://broadinstitute.github.io/picard/) Download the picard.jar file and add the path to that file to the config_file.txt
-
 # Usage:
 
 Clone the repository and copy the raw data into the ATACseq_analysis directory.
 
-Adjust the path to the ATACseq_analysis directory in the config_file.txt.
-
-Adjust the path to your picard.jar file in the config_file.txt.
-
 Change the adapter sequence for read trimming in the config_file.txt if necessary. By default it contains the Illumina Nextera adapter. For adapter sequences see: https://support.illumina.com/content/dam/illumina-support/documents/documentation/chemistry_documentation/experiment-design/illumina-adapter-sequences-1000000002694-10.pdf 
 
-Change into the required_files directory and run the analysis script (analysis_script.sh).
+Change into the required_files directory and run the analysis script by typing "bash analysis_script.sh".
