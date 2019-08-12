@@ -152,7 +152,7 @@ rm $i.sppresults.txt
 mv $i.plot.pdf $STATS
 done
 
-# Preparation of coverage files for visualization in IGV
+### Preparation of coverage files (bigWig) for visualization in IGV
 
 mkdir $WKDIR/IGV_files
 
@@ -163,7 +163,7 @@ do
 done
 
 
-# Fragment length splitting and peak calling with nucleosome free fragments
+### split files based on read length (according to Buenrostro et al. 2013)
 mkdir $WKDIR/macs2_peaks_calling
 
 SQFREESIZE=$(echo "$FREESIZE*$FREESIZE" | bc)
@@ -187,45 +187,52 @@ do
 	rm *.sam
 done
 
+### Preparation of coverage files (bigWig) for visualization in IGV from split bam files
 for SNAME in $(ls $WKDIR | grep -E '((nucfree)|(mononuc)|(dinuc)).bam$')
 do
 	bamCoverage -b $WKDIR/$SNAME -o $WKDIR/IGV_files/$SNAME.bw -bs 5 -p $THREAD --normalizeUsing CPM
 done
 
-#SNAME=$(echo $i | sed 's:/.*/::g' | cut -d "." -f 1)  ### this extracts the sample name from the bam file name - adjust accordingly, otherwise replace "$SNAME" in script with "$i" (without quotes)
-#macs2 callpeak --nomodel --extsize 147 -g 14521502 -n $SNAME -t $i --outdir $WKDIR/macs2_peaks_calling  ### 14521502 bp is the size of the haploid A22 C. albicans genome without mitochondria
-#done
+### merging control bam files (gDNA samples)
+for i in $WKDIR/gDNA*nucfree.bam
+do
+	mv $i $i.control.bam
+done
+samtools merge $WKDIR/gDNA_wt_merged.nucfree.bam $WKDIR/*control.bam
 
-# Converts .narrowPeak file from peak calling to .gff files
-#for i in $WKDIR/macs2_peaks_calling/*.narrowPeak
-#do
-#cp $i $WKDIR/input.txt
-#$WKDIR/narrowPeak_gff_conversion.r
-#echo "##gff-version 3" > $i.gff
-#cat $WKDIR/output.txt >> $i.gff
-#rm $WKDIR/input.txt
-#rm $WKDIR/output.txt
-#done
+### peak calling with MACS2 with nuclesome free bam files
+for i in $WKDIR/*bam.nucfree.bam
+do 
+	SNAME=$(echo $i | sed 's:/.*/::g' | cut -d "." -f 1)
+	macs2 callpeak -t $i -c $WKDIR/gDNA_wt_merged.nucfree.bam -f BAMPE -n $SNAME -g 14521502 --outdir $WKDIR/macs2_peaks_calling
+done
 
-# counts number of reads in called peaks
-#for i in $WKDIR/*.rmdup.bam
-#do
-#SNAME=$(echo $i | sed 's:/.*/::g' | cut -d "." -f 1)
-#htseq-count -f bam -s no -t peak -i ID $i $WKDIR/macs2_peaks_calling/$SNAME"_peaks.narrowPeak.gff" > $WKDIR/macs2_peaks_calling/$SNAME.count.txt
-#done
+### merging of peaks called in any sample
+cat $WKDIR/macs2_peaks_calling/*narrowPeak | cut -f 1,2,3,4 | sed 's/_peak_[0-9]*//g' | sortBed | bedtools merge -c 4 -o distinct -delim ","  > $WKDIR/macs2_peaks_calling/merged_all_peaks_annot.bed
 
-# Calculates the number of reads within peaks
-#for i in $WKDIR/macs2_peaks_calling/*.count.txt
-#do
-#echo $i >> $WKDIR/macs2_peaks_calling/FRiP.txt
-#echo "Reads in peaks:" >> $WKDIR/macs2_peaks_calling/FRiP.txt
-#cat $i | grep -v ^_ | awk '{sum += $2} END {print sum}' >> $WKDIR/macs2_peaks_calling/FRiP.txt
-#PEAKS=$(cat $i | grep -v ^_ | awk '{sum += $2} END {print sum}')
-#echo "Total reads:" >> $WKDIR/macs2_peaks_calling/FRiP.txt
-#cat $i | awk '{sum += $2} END {print sum}' >> $WKDIR/macs2_peaks_calling/FRiP.txt
-#TOTAL=$(cat $i | awk '{sum += $2} END {print sum}')
-#echo "FRiP:" >> $WKDIR/macs2_peaks_calling/FRiP.txt
-#echo $PEAKS/$TOTAL | bc -l >> $WKDIR/macs2_peaks_calling/FRiP.txt
-#done
+### merged peaks file converted to gff format for read counting
+Rscript $WKDIR/required_files/narrowPeak_gff_conversion.r ### see required files directory for this R script
+mv $WKDIR/required_files/merged_all_peaks.gff $WKDIR/macs2_peaks_calling/merged_all_peaks.gff
 
+### bam files have to be sorted by read name first prior to read counting (for paired-end data)
+for i in $WKDIR/*bam.nucfree.bam
+do
+	samtools sort -n -o $i.sortn.bam -@ $THREAD $i
+done
 
+### Read counting using the read name sorted nucleosome free bam files
+for i in $WKDIR/*nucfree.bam.sortn.bam
+do
+	htseq-count -f bam -s no -t peak -i ID $i $WKDIR/macs2_peaks_calling/merged_all_peaks.gff > $i.count.txt
+done
+
+### Flags are removed
+for i in $WKDIR/*count.txt
+do
+    head -n -5 $i > $i.crop.txt
+done
+
+### Creates a directory called downstream analysis and copies the R script for downstream analysis
+### Use this script for doing further downstream analysis in R
+mkdir $WKDIR/downstream_analysis
+cp $WKDIR/required_files/downstream_analysis.R $WKDIR/downstream_analysis/
