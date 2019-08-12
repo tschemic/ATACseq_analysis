@@ -232,3 +232,7 @@ do
     head -n -5 $i > $i.crop.txt
 done
 
+### Creates a directory called downstream analysis and copies the R script for downstream analysis
+### Use this script for doing further downstream analysis
+mkdir $WKDIR/downstream_analysis
+cp $WKDIR/required_files/downstream_analysis.R $WKDIR/downstream_analysis/
