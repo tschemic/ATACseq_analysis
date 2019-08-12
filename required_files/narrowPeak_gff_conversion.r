@@ -1,6 +1,6 @@
 #!/usr/bin/Rscript
 
-rdata <- read.table("merged_all_peaks_annot.bed",
+rdata <- read.table("../macs2_peaks_calling/merged_all_peaks_annot.bed",
                     sep="\t", quote = "")
 rdata <- rdata[,c(1,2,3)]
 rdata$source <- "macs2"
