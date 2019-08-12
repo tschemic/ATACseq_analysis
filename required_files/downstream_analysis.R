@@ -11,7 +11,7 @@ eval(parse(text = getURL("https://raw.githubusercontent.com/tschemic/Additional_
 
 ### Created list of .bam files and sample info ##################################################################
 bamFiles <- dir(path = "..", pattern = "final.bam$", full.names = TRUE)
-sampleList <- read_tsv("sample_list.txt")
+sampleList <- read_tsv("sample_list.txt")  ### create a tab separated list of bam file names, sample names and group names
 
 ### Function to plot read numbers mapped to each chromosome ######################################################
 plotChromReads <- function(bamList = bamFiles){

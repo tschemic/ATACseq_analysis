@@ -32,3 +32,5 @@ Clone the repository and copy the raw data into the ATACseq_analysis directory.
 Change the adapter sequence for read trimming in the config_file.txt if necessary. By default it contains the Illumina Nextera adapter. For adapter sequences see: https://support.illumina.com/content/dam/illumina-support/documents/documentation/chemistry_documentation/experiment-design/illumina-adapter-sequences-1000000002694-10.pdf 
 
 Change into the required_files directory and run the analysis script by typing "bash analysis_script.sh".
+
+After analysis has finished, go to the downstream_analysis directory and use the downstream_analysis.R script for further analysis.
