@@ -214,5 +214,21 @@ cat $WKDIR/macs2_peaks_calling/*narrowPeak | cut -f 1,2,3,4 | sed 's/_peak_[0-9]
 mv $WKDIR/required_files/narrowPeak_gff_conversion.r $WKDIR/macs2_peaks_calling/narrowPeak_gff_conversion.r
 Rscript $WKDIR/macs2_peaks_calling/narrowPeak_gff_conversion.r ### see required files directory for this R script
 
+### bam files have to be sorted by read name first prior to read counting (for paired-end data)
+for i in $WKDIR/*bam.nucfree.bam
+do
+	samtools sort -n -o $i.sortn.bam -@ $THREAD $i
+done
 
+### Read counting using the read name sorted nucleosome free bam files
+for i in $WKDIR/*nucfree.bam.sortn.bam
+do
+	htseq-count -f bam -s no -t peak -i ID $i $WKDIR/macs2_peaks_calling/merged_all_peaks.gff > $i.count.txt
+done
+
+### Flags are removed
+for i in $WKDIR/*count.txt
+do
+    head -n -5 $i > $i.crop.txt
+done
 
