@@ -211,6 +211,7 @@ done
 cat $WKDIR/macs2_peaks_calling/*narrowPeak | cut -f 1,2,3,4 | sed 's/_peak_[0-9]*//g' | sortBed | bedtools merge -c 4 -o distinct -delim ","  > $WKDIR/macs2_peaks_calling/merged_all_peaks_annot.bed
 
 ### merged peaks file converted to gff format for read counting
+mv $WKDIR/required_files/narrowPeak_gff_conversion.r $WKDIR/macs2_peaks_calling/narrowPeak_gff_conversion.r
 Rscript $WKDIR/macs2_peaks_calling/narrowPeak_gff_conversion.r ### see required files directory for this R script
 
 
