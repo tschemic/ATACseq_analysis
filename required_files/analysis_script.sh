@@ -26,8 +26,10 @@ then
 	wget http://www.candidagenome.org/download/gff/C_albicans_SC5314/Assembly22/C_albicans_SC5314_A22_current_features.gff
 	cat C_albicans_SC5314_A22_current_features.gff | egrep -v "Ca22chr[1-7R]B" > C_albicans_SC5314_A22_current_features_haploid.gff
 	gunzip C_albicans_SC5314_A22_current_chromosomes.fasta.gz
-	wget http://www.candidagenome.org/download/External_id_mappings/CGDID_2_GeneID.tab.gz
-	gunzip CGDID_2_GeneID.tab.gz
+	#wget http://www.candidagenome.org/download/External_id_mappings/CGDID_2_GeneID.tab.gz # Entrez ID mapping from NCBI has more mappings
+	#gunzip CGDID_2_GeneID.tab.gz
+	wget ftp://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/182/965/GCF_000182965.3_ASM18296v3/GCF_000182965.3_ASM18296v3_genomic.gff.gz
+	gunzip GCF_000182965.3_ASM18296v3_genomic.gff.gz ### contains Entrez ID to CGDID mappings
 	cat C_albicans_SC5314_A22_current_chromosomes.fasta | egrep ">Ca22chr[1-7RM][A_]" | sed 's/>//g' | sed 's/(/1	/g' | sed 's/ nucleotides)//g' | sed 's/ /	/g' > chrMA.bed
 	bedtools getfasta -fi C_albicans_SC5314_A22_current_chromosomes.fasta -bed chrMA.bed | fold -w 60 | sed 's/:1-[0-9]*//g' > C_albicans_SC5314_A22_current_chromosomesAM.fasta
 else
