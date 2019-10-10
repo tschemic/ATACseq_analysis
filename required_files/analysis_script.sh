@@ -174,7 +174,7 @@ mkdir $WKDIR/IGV_files
 for i in $WKDIR/*.final.bam
 do
 	SNAME=$(echo $i | sed 's:/.*/::g')
-	bamCoverage -b $i -o $WKDIR/IGV_files/$SNAME.bw -e -p $THREAD --normalizeUsing CPM
+	bamCoverage -b $i -o $WKDIR/IGV_files/$SNAME.bw -e -p $THREAD -bs 5 --normalizeUsing CPM
 done
 
 
@@ -205,7 +205,7 @@ done
 ### Preparation of coverage files (bigWig) for visualization in IGV from split bam files
 for SNAME in $(ls $WKDIR | grep -E '((nucfree)|(mononuc)|(dinuc)).bam$')
 do
-	bamCoverage -b $WKDIR/$SNAME -o $WKDIR/IGV_files/$SNAME.bw -bs 5 -p $THREAD --normalizeUsing CPM
+	bamCoverage -b $WKDIR/$SNAME -o $WKDIR/IGV_files/$SNAME.bw -bs 5 -p $THREAD -e --normalizeUsing CPM
 done
 
 ### merging control bam files (gDNA samples)
