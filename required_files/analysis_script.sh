@@ -37,7 +37,7 @@ then
 	bedtools getfasta -fi C_albicans_SC5314_A22_current_chromosomes.fasta -bed chrMA.bed | fold -w 60 | sed 's/:1-[0-9]*//g' > C_albicans_SC5314_A22_current_chromosomesAM.fasta
 	
 	### Retrieve TSS data for C. albicans and create a gff file with TSS information
-	wget http://www.yeastss.org/jbrowse/JBrowse_data/Candida_albicans/CalbconsensusClusters.txt
+	#wget http://www.yeastss.org/jbrowse/JBrowse_data/Candida_albicans/CalbconsensusClusters.txt # ConsensusCluster file with CGD geneIDs is already included in the repository
 	Rscript gff_file_wTSSs.R
 	cat C_albicans_SC5314_A22_current_features_haploid.gff | grep "#" > header.gff
 	cat header.gff C_albicans_SC5314_A22_current_features_haploid_5UTRs_woHeader.gff > C_albicans_SC5314_A22_current_features_haploid_5UTRs.gff
