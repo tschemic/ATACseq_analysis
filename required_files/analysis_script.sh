@@ -138,7 +138,7 @@ do
 	samtools view -b -@ $THREAD out.sam > $i.final.bam
 	rm $i.trimmed.fq.bam.sort.bam.markdup.bam.filt.bam
 	
-	samtools sort -n -o $i.final.sortn.bam -@ $THREAD $i.final.bam
+	#samtools sort -n -o $i.final.sortn.bam -@ $THREAD $i.final.bam # not necessary, counting is done with nucfree bam files
 
 	#echo $i >> $WKDIR/QC/flagstat_analysis.txt
 	samtools flagstat $i.final.bam >> $WKDIR/QC/$SNAME.txt   # flagstat analysis
