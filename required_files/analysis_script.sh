@@ -251,3 +251,8 @@ done
 ### Use this script for doing further downstream analysis in R
 mkdir $WKDIR/downstream_analysis
 cp $WKDIR/required_files/downstream_analysis.R $WKDIR/downstream_analysis/
+for i in $WKDIR/*.final.bam
+do
+	samtools view $i | awk 'BEGIN {FS="\t"; OFS="\t"} {if (($2 == 99)||($2 == 163)) {print}}'  | cut -f 9 > $i.fragsize
+done
+mv $WKDIR/*.fragsize $WKDIR/downstream_analysis
