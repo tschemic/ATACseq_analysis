@@ -20,7 +20,7 @@ gff_file = "C_albicans_SC5314_A22_current_features_haploid.gff"
 annotatePeaks <- function(peaks = tsss_GR, gff = gff_file){
   TxDb.Calbicans.A22.CGD.features <- makeTxDbFromGFF(gff, dataSource = "CGD", organism = "Candida albicans",
                                                      circ_seqs = "Ca22chrM_C_albicans_SC5314")
-  anno <- annotatePeak(peaks, TxDb = TxDb.Calbicans.A22.CGD.features, sameStrand = TRUE, tssRegion = c(-1000, 0))
+  anno <- annotatePeak(peaks, TxDb = TxDb.Calbicans.A22.CGD.features, sameStrand = TRUE, tssRegion = c(-2000, 0))
   return(anno)
 }
 
