@@ -68,7 +68,7 @@ dev.off()
 
 # Chromosome reads plotted for merged bam files
 # Biological replicates (aligned bam files) for ecah condition have been merged using samtools merge
-bamFilesMerged <- c("../Insertion_site_preference/gDNA_merged_final.bam", "../MNase_comparison/NucleoATAC/Promoters/YPD_merged_final.bam", "../MNase_comparison/NucleoATAC/Promoters/H2O2_merged_final.bam")
+bamFilesMerged <- c("../gDNA_merged_final.bam", "../YPD_merged_final.bam", "../H2O2_merged_final.bam")
 sampleListMerged <- tibble(file = c("gDNA_merged_final.bam", "YPD_merged_final.bam", "H2O2_merged_final.bam"), sample = c("gDNA", "YPD", "H2O2"))
 
 chrom_read_plot <- plotChromReads(bamList = bamFilesMerged, samplList = sampleListMerged)
