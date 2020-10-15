@@ -44,12 +44,17 @@ Coverage tracks with fragment coverage:
 
 ![Figure 1](images/Figure1_final_crop.png)
 
+
+
 Nucleosomal and nucleosome-free signals at transcription start site (TSS):
 
 ![Figure 2](images/Figure2_final_crop.png)
+
+
 
 Genome-wide location of nucleosome-free peaks:
 
 ![Figure 3](images/Figure3_final_crop2.png)
 
 
+<img src="/images/Figure1_final_crop.png" alt="Test image"/>
