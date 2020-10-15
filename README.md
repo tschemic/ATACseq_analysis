@@ -1,6 +1,7 @@
 # ATACseq_analysis
 
-Script for analysis of ATAC-seq data obtained from Candida albicans. This script is used in the Kuchler lab (http://cdl.univie.ac.at/) at MFPL (https://www.mfpl.ac.at/de.html).
+Script for analysis of ATAC-seq data obtained from Candida albicans. This analysis pipeline is used in the Kuchler lab (http://cdl.univie.ac.at/) at MFPL (https://www.mfpl.ac.at/de.html) and has been used for the following publication: Jenull, Tscherner, Mair & Kuchler; J. Fungi 2020, 6(3), 182; https://doi.org/10.3390/jof6030182
+
 It is based on this ATACseq pipeline: https://github.com/epigen/open_pipelines/blob/master/pipelines/atacseq.md
 
 This repository conatains a pipeline for the primary analysis of Illumina short read sequencing ATACseq data (paired-end) obtained from the fungal pathogen Candida albicans. It includes the retrieval of genomic data required for analysis from the Candida Genome Database (CGD, http://www.candidagenome.org/), quality control of the raw data, trimming and mapping of reads, removal of reads mapping to mitochonria and removing duplicates. Transcriptional start site information included in this repository was obtained from http://www.yeastss.org/ and PICARD tools were obtained from https://broadinstitute.github.io/picard/. Only the ATACseq raw data in .bam or .fastq format (compressed or uncompressed) have to be provided by the user.
