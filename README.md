@@ -42,5 +42,5 @@ Output Figures are from: https://doi.org/10.3390/jof6030182
 
 Coverage tracks with fragment coverage:
 
-![Figure 1](https://www.mdpi.com/jof/jof-06-00182/article_deploy/html/images/jof-06-00182-g001-550.jpg)
+![Figure 1](images/Figure1_final_crop.png)
 
