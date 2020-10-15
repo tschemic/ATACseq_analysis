@@ -50,6 +50,6 @@ Nucleosomal and nucleosome-free signals at transcription start site (TSS):
 
 Genome-wide location of nucleosome-free peaks:
 
-![Figure 3](images/Figure3_final_crop.png)
+![Figure 3](images/Figure3_final_crop2.png)
 
 
