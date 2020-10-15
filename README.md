@@ -44,3 +44,6 @@ Coverage tracks with fragment coverage:
 
 ![Figure 1](images/Figure1_final_crop.png)
 
+
+
+
