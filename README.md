@@ -35,3 +35,12 @@ Change the adapter sequence for read trimming in the config_file.txt if necessar
 Change into the required_files directory and run the analysis script by typing "bash analysis_script.sh".
 
 After analysis has finished, go to the downstream_analysis directory and use the downstream_analysis.R script for further analysis.
+
+# Output examples:
+
+Output Figures are from: https://doi.org/10.3390/jof6030182
+
+Coverage tracks with fragment coverage:
+
+![Figure 1](https://www.mdpi.com/2309-608X/6/3/182/htm#)
+
