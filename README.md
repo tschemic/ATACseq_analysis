@@ -58,8 +58,8 @@ Genome-wide location of nucleosome-free peaks:
 
 
 
-
-# Stats
+#
+# Repository stats
 
 [![Github stats](https://github-readme-stats.vercel.app/api?username=tschemic&hide=issues,contribs&show_icons=true&theme=dark)](https://github.com/tschemic/ATACseq_analysis)
 [![Languages used](https://github-readme-stats.vercel.app/api/top-langs/?username=tschemic&exclude_repo=ThinkStats2,RNAseq_analysis,RNAseq_analysis_mouse,Additional_Scripts&theme=dark)](https://github.com/tschemic/ATACseq_analysis)
