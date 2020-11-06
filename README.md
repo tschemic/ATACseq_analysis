@@ -1,3 +1,6 @@
+[![ReadMe Card](https://github-readme-stats.vercel.app/api/pin/?username=tschemic&repo=ATACseq_analysis&theme=dark&show_owner=true)](https://github.com/tschemic/ATACseq_analysis)
+
+
 # ATACseq_analysis
 
 Script for analysis of ATAC-seq data obtained from Candida albicans. This analysis pipeline is used in the Kuchler lab (http://cdl.univie.ac.at/) at MFPL (https://www.mfpl.ac.at/de.html) and has been used for the following publication: Jenull, Tscherner, Mair & Kuchler; J. Fungi 2020, 6(3), 182; https://doi.org/10.3390/jof6030182
