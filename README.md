@@ -61,10 +61,6 @@ Genome-wide location of nucleosome-free peaks:
 
 
 
-Genome-wide location of nucleosome-free peaks:
-
-<img src="/images/output.html" alt="Figure 4" width="500"/>
-
 
 
 #
